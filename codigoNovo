@@ -1,0 +1,56 @@
+
+int multiplicaMatrizes(matrizA, matrizB){
+	for (i=0;i<linA; i++) {
+		for (j=0; j<linA; j++) {
+			for (k=0; k<colA; k++) {
+				matrizAB[i][j] = matrizAB[i][j] + (matrizA[i][k] * matrizB[k][j]);
+			}
+		}
+	}
+	return matrizAB;
+}
+void printaMatriz(matriz){
+	for (i=0; i<linA; i++) {
+		for (j=0; j<colB; j++) {
+			printf("%d ", matriz[i][j]);
+		}
+		printf("\n");
+	}
+}
+int geraMatriz(matriz, linhas, colunas){
+	for(i=0; i<linhas; i++){
+		for(j=0; j<colunas; j++){
+			matriz[i][j]=rand() % 30;
+		}
+	}	
+	return matriz;
+}
+void main(){
+	int colA=5;
+	int linA=5;
+	int colB=5;
+	int linB=5;
+	int matrizA[linA][colA];
+	int matrizB[linB][colB];
+	int matrizAB[linA][colB];
+	int i, j, k;
+	time_t t;
+	pid_t pid;
+	srand((unsigned) time(&t)); //Função utilizada para inicializar a geração de valores aleatórios
+
+	matrizA=geraMatriz(matrizA, linA, colA);
+	matrizB=geraMatriz(matrizB, linB, colB);
+	pid=fork();
+	switch(pid){
+		case -1:
+			exit(1);
+			break;
+		case 0:
+			matrizAB = multiplicaMatrizes(matrizA, matrizB);
+			printaMatriz(matrizAB);
+			exit(0);
+			break;
+		default:
+			execlp("ps", "ps", "-af", 0);
+	}
+}
